@@ -73,7 +73,6 @@ function findSteep(i, j, arr) {
 
 function findLPAndSteepestPath(max) {
   let steepest = 0
-  console.log(max);
   for (var i=0; i<width; i++) {
     for (var j=0; j<height; j++) {
       if (lp[i][j] === max) {
@@ -93,7 +92,7 @@ rl.on('line', function(line) {
     var lineArr = [];
     var lpLine = [];
     line.split(' ').forEach(x => {
-      lineArr.push(x);
+      lineArr.push(Number(x));
       lpLine.push(0);
     });
     inputArr.push(lineArr);
