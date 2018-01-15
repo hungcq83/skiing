@@ -11,21 +11,18 @@ const lp = [];
 var count = 0;
 var width, height;
 
-function findLPForCell(i, j, arr) {
+function findLPForCell(i, j) {
   if (lp[i][j] > 0) return lp[i][j];
   let north,
       south,
       west,
       east;
-  north = (i>0 && inputArr[i-1][j] < inputArr[i][j]) ? 1 + findLPForCell(i-1, j, arr) : 1;
-  south = (i<width-1 && inputArr[i+1][j] < inputArr[i][j]) ? 1 + findLPForCell(i+1, j, arr) : 1;
-  west = (j>0 && inputArr[i][j-1] < inputArr[i][j]) ? 1 + findLPForCell(i, j-1, arr) : 1;
-  east = (j<height-1 && inputArr[i][j+1] < inputArr[i][j]) ? 1+ findLPForCell(i, j+1, arr) : 1;
+  north = (i>0 && inputArr[i-1][j] < inputArr[i][j]) ? 1 + findLPForCell(i-1, j) : 1;
+  south = (i<width-1 && inputArr[i+1][j] < inputArr[i][j]) ? 1 + findLPForCell(i+1, j) : 1;
+  west = (j>0 && inputArr[i][j-1] < inputArr[i][j]) ? 1 + findLPForCell(i, j-1) : 1;
+  east = (j<height-1 && inputArr[i][j+1] < inputArr[i][j]) ? 1+ findLPForCell(i, j+1) : 1;
 
   lp[i][j] = Math.max(north, south, west, east);
-  if (lp[i][j] === 1) {
-    arr.push(inputArr[i][j]);
-  }
   return lp[i][j];
 }
 
@@ -36,7 +33,7 @@ function findLongestPath() {
   for (var i=0; i<width; i++) {
     for (var j=0; j<height; j++) {
       let arr = [];
-      let length = findLPForCell(i, j, arr);
+      let length = findLPForCell(i, j);
       if (length > max) {
         max = length;
       }
@@ -48,20 +45,20 @@ function findLongestPath() {
 
 function findSteep(i, j, arr) {
   let gotPath = false;
-  let currVal = inputArr[i][j];
-  if (i>0 && inputArr[i-1][j] < currVal) {
+  let currVal = lp[i][j];
+  if (i>0 && lp[i-1][j] === currVal-1) {
     gotPath = true;
     findSteep(i-1, j, arr);
   }
-  if (i<width-1 && inputArr[i+1][j] < currVal) {
+  if (i<width-1 && lp[i+1][j] === currVal-1) {
     gotPath = true;
     findSteep(i+1, j, arr);
   }
-  if (j>0 && inputArr[i][j-1] < currVal) {
+  if (j>0 && lp[i][j-1] === currVal-1) {
     gotPath = true;
     findSteep(i, j-1, arr);
   }
-  if (j<height-1 && inputArr[i][j+1] < currVal) {
+  if (j<height-1 && lp[i][j+1] === currVal-1) {
     gotPath = true;
     findSteep(i, j+1, arr);
   }
